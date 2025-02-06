@@ -1,0 +1,53 @@
+CREATE TABLE Batiment(
+   id_batiment INT,
+   type VARCHAR(50),
+   points_de_vie INT,
+   PRIMARY KEY(id_batiment)
+);
+
+CREATE TABLE Attaque(
+   id_attaque INT,
+   type VARCHAR(50),
+   niveau INT,
+   degats INT,
+   PRIMARY KEY(id_attaque)
+);
+
+CREATE TABLE Défense(
+   id_défense INT,
+   type VARCHAR(50),
+   niveau INT,
+   degat_en_moins INT,
+   PRIMARY KEY(id_défense)
+);
+
+CREATE TABLE Joueur(
+   id_joueur INT,
+   nom VARCHAR(50),
+   prenom VARCHAR(50),
+   PRIMARY KEY(id_joueur)
+);
+
+CREATE TABLE Deck(
+   id_deck INT,
+   nom_deck VARCHAR(50),
+   id_joueur VARCHAR(50),
+   PRIMARY KEY(id_deck)
+);
+
+CREATE TABLE Combat(
+   id_combat INT,
+   adversaire VARCHAR(50),
+   resultat LOGICAL,
+   id_batiment INT NOT NULL,
+   id_attaque INT NOT NULL,
+   id_défense INT NOT NULL,
+   id_deck INT NOT NULL,
+   id_joueur INT NOT NULL,
+   PRIMARY KEY(id_combat),
+   FOREIGN KEY(id_batiment) REFERENCES Batiment(id_batiment),
+   FOREIGN KEY(id_attaque) REFERENCES Attaque(id_attaque),
+   FOREIGN KEY(id_défense) REFERENCES Défense(id_défense),
+   FOREIGN KEY(id_deck) REFERENCES Deck(id_deck),
+   FOREIGN KEY(id_joueur) REFERENCES Joueur(id_joueur)
+);
