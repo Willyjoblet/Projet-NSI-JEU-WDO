@@ -10,6 +10,7 @@ CREATE TABLE Attaque(
    type VARCHAR(50),
    niveau INT,
    degats INT,
+   type INT,
    PRIMARY KEY(id_attaque)
 );
 
