@@ -1,0 +1,36 @@
+CREATE TABLE Joueurs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    pseudo VARCHAR(50) UNIQUE NOT NULL,
+);
+
+CREATE TABLE Batiments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(50) NOT NULL,
+    points_de_vie INT NOT NULL
+);
+
+CREATE TABLE Cartes (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(50) NOT NULL,
+    type ENUM('attaque', 'défense') NOT NULL,
+    degats INT DEFAULT 0,
+    protection INT DEFAULT 0,
+    cout_energy INT NOT NULL
+);
+
+CREATE TABLE Decks (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    joueur_id INT,
+    carte_id INT,
+    FOREIGN KEY (joueur_id) REFERENCES Joueurs(id),
+    FOREIGN KEY (carte_id) REFERENCES Cartes(id)
+);
+
+CREATE TABLE Batiments_Joueurs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    joueur_id INT,
+    batiment_id INT,
+    points_de_vie_restants INT NOT NULL,
+    FOREIGN KEY (joueur_id) REFERENCES Joueurs(id),
+    FOREIGN KEY (batiment_id) REFERENCES Batiments(id)
+);
