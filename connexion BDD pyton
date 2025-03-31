@@ -1,0 +1,10 @@
+import mysql.connector
+
+mydb = mysql.connector.connect(
+    host = '0504-srv-sig',
+    database = 'nsi_eleve8',
+    user = 'nsi_eleve8',
+    password = 'eleve8'
+)
+
+print(mydb)
