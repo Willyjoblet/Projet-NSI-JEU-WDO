@@ -41,7 +41,7 @@ def charger_joueur(pseudo):
 
 # Fonction pour démarrer le jeu
 def lancer_partie(joueur1_pseudo, joueur2_pseudo):
-    print(f"🎮 Début de la partie : {joueur1_pseudo} VS {joueur2_pseudo} 🎮")
+    print(f"Début de la partie : {joueur1_pseudo} VS {joueur2_pseudo}")
     
     try:
         # Charger les joueurs, cartes et bâtiments
