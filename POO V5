@@ -1,0 +1,96 @@
+import mysql.connector
+
+# Connexion à la base de données
+mydb = mysql.connector.connect(
+    host='0504-srv-sig',
+    database='nsi_eleve8',
+    user='nsi_eleve8',
+    password='eleve8'
+)
+
+# Fonction pour charger les joueurs depuis la base de données
+def charger_joueur(pseudo):
+    cursor = mydb.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM Joueurs WHERE pseudo = %s", (pseudo,))
+    joueur = cursor.fetchone()
+    
+    if not joueur:
+        raise Exception("Joueur introuvable")
+    
+    # Charger le deck du joueur
+    cursor.execute("""
+        SELECT c.id, c.nom, c.type, c.degats, c.protection 
+        FROM Cartes c
+        JOIN Decks d ON c.id = d.carte_id
+        WHERE d.joueur_id = %s
+    """, (joueur['id'],))
+    
+    cartes = cursor.fetchall()
+    
+    # Charger les bâtiments du joueur
+    cursor.execute("""
+        SELECT b.id, b.nom, bj.points_de_vie_restants
+        FROM Batiments b
+        JOIN Batiments_Joueurs bj ON b.id = bj.batiment_id
+        WHERE bj.joueur_id = %s
+    """, (joueur['id'],))
+    
+    batiments = cursor.fetchall()
+
+    return joueur, cartes, batiments
+
+# Fonction pour démarrer le jeu
+def lancer_partie(joueur1_pseudo, joueur2_pseudo):
+    print(f"🎮 Début de la partie : {joueur1_pseudo} VS {joueur2_pseudo} 🎮")
+    
+    try:
+        # Charger les joueurs, cartes et bâtiments
+        j1, cartes_j1, batiments_j1 = charger_joueur(joueur1_pseudo)
+        j2, cartes_j2, batiments_j2 = charger_joueur(joueur2_pseudo)
+        
+        # Afficher les informations du joueur 1
+        print(f"\n{j1['pseudo']} a {len(cartes_j1)} cartes et {len(batiments_j1)} bâtiments.")
+        print("Cartes de", j1['pseudo'])
+        for carte in cartes_j1:
+            print(f"{carte['nom']} ({carte['type']}) : Dégâts={carte['degats']}, Protection={carte['protection']}")
+        
+        print(f"Bâtiments de {j1['pseudo']}:")
+        for batiment in batiments_j1:
+            print(f"{batiment['nom']} : PV restants={batiment['points_de_vie_restants']}")
+        
+        # Afficher les informations du joueur 2
+        print(f"\n{j2['pseudo']} a {len(cartes_j2)} cartes et {len(batiments_j2)} bâtiments.")
+        print("Cartes de", j2['pseudo'])
+        for carte in cartes_j2:
+            print(f"{carte['nom']} ({carte['type']}) : Dégâts={carte['degats']}, Protection={carte['protection']}")
+        
+        print(f"Bâtiments de {j2['pseudo']}:")
+        for batiment in batiments_j2:
+            print(f"{batiment['nom']} : PV restants={batiment['points_de_vie_restants']}")
+        
+        # Initialiser les points de vie des bâtiments
+        batiments_j1_dict = {b['nom']: b['points_de_vie_restants'] for b in batiments_j1}
+        batiments_j2_dict = {b['nom']: b['points_de_vie_restants'] for b in batiments_j2}
+
+        # Démonstration d'attaque entre joueurs
+        print("\nDébut du combat !")
+        
+        # Exemple d'attaque : Carte d'attaque d'Alpha contre un bâtiment de Bravo
+        carte_attaque_j1 = cartes_j1[0]  # Choisir la première carte d'attaque d'Alpha
+        carte_attaque_j2 = cartes_j2[0]  # Choisir la première carte d'attaque de Bravo
+        
+        print(f"\n{j1['pseudo']} attaque {j2['pseudo']} avec {carte_attaque_j1['nom']} !")
+        # Appliquer l'attaque
+        batiments_j2_dict["Bat_Milieu"] -= carte_attaque_j1['degats']
+        print(f"Les points de vie de Bat_Milieu sont maintenant : {batiments_j2_dict['Bat_Milieu']}")
+
+        # Exemple de défense : Carte de défense de Bravo contre l'attaque
+        print(f"\n{j2['pseudo']} défend avec {carte_attaque_j2['nom']} !")
+        batiments_j1_dict["Bat_Milieu"] -= carte_attaque_j2['protection']
+        print(f"Les points de vie de Bat_Milieu sont maintenant : {batiments_j1_dict['Bat_Milieu']}")
+
+    except Exception as e:
+        print(f"Erreur : {e}")
+
+# Lancer une partie entre Alpha et Bravo
+lancer_partie("Alpha", "Bravo")
