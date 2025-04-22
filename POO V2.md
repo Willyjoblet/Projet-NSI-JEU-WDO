@@ -43,10 +43,8 @@ class Joueur:
         print(f"{self.nom} regagne {montant} énergie (total: {self.energie}).")
 
 
-# === MOTEUR DE COMBAT ===
-
 def resoudre_combat(carte1, carte2):
-    print(f"⚔️ Combat entre {carte1.nom} et {carte2.nom} ⚔️")
+    print(f"Combat entre {carte1.nom} et {carte2.nom}")
     if carte1.attaque > carte2.defense and carte2.attaque < carte1.defense:
         print(f"{carte1.nom} gagne le duel.")
         return 1
@@ -57,8 +55,6 @@ def resoudre_combat(carte1, carte2):
         print("Égalité, les deux cartes sont détruites.")
         return 0
 
-
-# === FONCTION DE JEU ===
 
 def jouer_tour(joueur1, joueur2):
     print("\n====== Nouveau tour ======")
