@@ -1,7 +1,7 @@
 import mysql.connector
 import random
 
-# === Connexion à la base ===
+# Connexion à la base
 def get_db_connection():
     return mysql.connector.connect(
         host='0504-srv-sig',
@@ -9,9 +9,6 @@ def get_db_connection():
         user='nsi_eleve8',
         password='eleve8'
     )
-
-
-# === Classes de jeu ===
 
 class Carte:
     def __init__(self, id, nom, type, degats, protection, cout_energy):
@@ -57,9 +54,6 @@ class Joueur:
         self.energie += montant
         print(f"{self.pseudo} regagne {montant} énergie (total: {self.energie}).")
 
-
-# === Chargement depuis la BDD ===
-
 def charger_joueur(pseudo):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -96,10 +90,10 @@ def charger_joueur(pseudo):
     return Joueur(id=joueur_id, pseudo=joueur["pseudo"], deck=cartes, batiments=batiments)
 
 
-# === Combat ===
+# Combat
 
 def simuler_combat(carte1, carte2):
-    print(f"\n⚔️ {carte1.nom} VS {carte2.nom} ⚔️")
+    print(f"{carte1.nom} VS {carte2.nom}")
     if carte1.degats > carte2.protection and carte2.degats < carte1.protection:
         print(f"→ {carte1.nom} gagne")
         return 1
@@ -130,11 +124,8 @@ def jouer_tour(j1, j2):
     else:
         print("Un des joueurs n'a pas pu jouer.")
 
-
-# === Partie complète ===
-
 def lancer_partie(pseudo1, pseudo2):
-    print(f"\n🎮 Lancement de la partie entre {pseudo1} et {pseudo2} 🎮")
+    print(f"Lancement de la partie entre {pseudo1} et {pseudo2}")
 
     joueur1 = charger_joueur(pseudo1)
     joueur2 = charger_joueur(pseudo2)
@@ -143,17 +134,15 @@ def lancer_partie(pseudo1, pseudo2):
     for _ in range(nb_tours):
         jouer_tour(joueur1, joueur2)
 
-    print("\n🎉 Résultat final 🎉")
+    print("Résultat final")
     print(f"{joueur1.pseudo}: {joueur1.score} | {joueur2.pseudo}: {joueur2.score}")
 
     if joueur1.score > joueur2.score:
-        print(f"🏆 {joueur1.pseudo} gagne !")
+        print(f"{joueur1.pseudo} gagne !")
     elif joueur2.score > joueur1.score:
-        print(f"🏆 {joueur2.pseudo} gagne !")
+        print(f"{joueur2.pseudo} gagne !")
     else:
-        print("🤝 Match nul !")
+        print("Match nul !")
 
-
-# === Point d’entrée ===
 if __name__ == "__main__":
-    lancer_partie("Alpha", "Bravo")  # Remplacez par les pseudos existants dans votre BDD
+    lancer_partie("Alpha", "Bravo")
