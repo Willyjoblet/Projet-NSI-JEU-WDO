@@ -66,7 +66,7 @@ def charger_joueur(pseudo):
 
 # Afficher l'état du jeu
 def afficher_etat_jeu(joueur1, joueur2):
-    print(f"🎮 Début de la partie : {joueur1.pseudo} VS {joueur2.pseudo} 🎮\n")
+    print(f"Début de la partie : {joueur1.pseudo} VS {joueur2.pseudo}")
     print(f"{joueur1.pseudo} a pour deck :")
     for carte in joueur1.deck:
         print(f"- {carte['nom']} ({carte['type']}) : {carte['degats']} dégâts / {carte['protection']} protection")
