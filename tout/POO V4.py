@@ -47,7 +47,7 @@ def charger_joueur(pseudo):
         WHERE Decks.joueur_id = %s
     """, (joueur_id,))
     cartes = cursor.fetchall()
-    random.shuffle(cartes)  # Mélanger le deck
+    random.shuffle(cartes)
 
     # Récupérer les bâtiments du joueur
     cursor.execute("""
@@ -88,8 +88,6 @@ def lancer_partie(pseudo1, pseudo2):
         joueur2 = charger_joueur(pseudo2)
 
         afficher_etat_jeu(joueur1, joueur2)
-
-        # Vous pouvez ajouter ici la logique du combat (ex : attaque, défense, calcul des dégâts, etc.)
 
     except Exception as e:
         print(f"Erreur : {e}")
