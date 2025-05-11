@@ -25,7 +25,7 @@ class Batiment:
         self.points_de_vie = 200 if "Gauche" in nom or "Droite" in nom else 250  # Spécifique pour les bâtiments de gauche/droite et du centre
 
 # Charger un joueur à partir de la base de données
-class Combat
+class Combat:
     def charger_joueur(pseudo):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
