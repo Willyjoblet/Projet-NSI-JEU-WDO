@@ -10,7 +10,6 @@ def get_db_connection():
         password='eleve8'
     )
 
-# Classe Joueur
 class Joueur:
     def __init__(self, id, pseudo, deck, batiments_data):
         self.id = id
@@ -18,14 +17,13 @@ class Joueur:
         self.deck = deck  # Liste de cartes
         self.batiments = [Batiment(bat["nom"]) for bat in batiments_data]
 
-# Classe Batiment
 class Batiment:
     def __init__(self, nom):
         self.nom = nom
         self.points_de_vie = 200 if "Gauche" in nom or "Droite" in nom else 250  # Spécifique pour les bâtiments de gauche/droite et du centre
 
-# Charger un joueur à partir de la base de données
 class Combat:
+    # Charger un joueur à partir de la base de données
     def charger_joueur(pseudo):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -133,4 +131,3 @@ def jouer_tour(joueur1, joueur2):
             joueur2.cimetiere.append(carte2)
     else:
         print("Un des joueurs ne peut pas jouer de carte.")
-
